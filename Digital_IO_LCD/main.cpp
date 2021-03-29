@@ -5,6 +5,7 @@ uLCD_4DGL uLCD(D1, D0, D2);
 DigitalIn up_button(D4);
 DigitalIn down_button(D5);
 DigitalIn confirm_button(D6);
+DigitalIn mypin(USER_BUTTON);
 
 AnalogOut Aout(D7);
 AnalogIn Ain(A0);
@@ -15,8 +16,9 @@ static int frequency = 20;
 static int freq_change = 1;
 static int freq_set = 0;
 
-float ADCdata[100];
-int S_i=0;
+float ADCdata[405];
+int sample_i;
+int sample_rate = 400;
 
 void check_button(){
     if(up_button){
@@ -62,87 +64,66 @@ void display_freq(){
     }
 }
 
-// void generate_waveform(){
-//     float period = 1/((choose_freq+1)*10);
-//     float T = period/27;
-//     for (float i = 0.0f; i < 0.91f; i += 0.07f) {
-//         Aout = i;
-//         ThisThread::sleep_for(T*1000ms);
-//     }
-//     for (float i = 0.91f; i >= 0.0f; i -= 0.07f) {
-//         Aout = i;
-//         ThisThread::sleep_for(T*1000ms);
-//     }
-// }
-
-// void sample_waveform(){
-//     for (i = 0; i < 128; i++){
-//     ADCdata[i] = Ain;
-//     ThisThread::sleep_for(1000ms/(5*10*27*2.5));
-//     }
-//     for (i = 0; i < 128; i++){
-//        printf("%f\r\n", ADCdata[i]);
-//        ThisThread::sleep_for(100ms);
-//     }
-// }
-
 int main()
 {
     while(1){
+        if(!mypin) break;
         check_button();
         display_freq();
         int period = 1000000/frequency;//set freq
         int T = period/20;
         if(frequency==20){
-            S_i = 0;
-            for (float i = 0.0f; i < 1.0f; i += 0.1f) {
-                Aout = i*0.92;
-                ADCdata[S_i++] = Ain;
-                wait_us(T);
-            }
-            for (float i = 1.0f; i > -0.1f; i -= 0.1f) {
-                Aout = i*0.92;
-                ADCdata[S_i++] = Ain;
-                wait_us(T);
-            }
-            for (int k=0; k<20; k++){
-                printf("%f\r\n", ADCdata[k]);
-                wait_us(1000);
+            sample_i = 0;
+            for (int p=0; p<20; p++){
+                for (float i = 0.0f; i < 1.0f; i += 0.1f) {
+                    Aout = i*0.92;
+                    ADCdata[sample_i++] = Ain;
+                    wait_us(T);
+                }
+                for (float i = 1.0f; i > 0.0f; i -= 0.1f) {
+                    Aout = i*0.92;
+                    ADCdata[sample_i++] = Ain;
+                    wait_us(T);
+                }
             }
         }
         else if(frequency==40){
-            S_i = 0;
-            for (float i = 0.0f; i < 1.0f; i += 0.1f) {
-                Aout = i*0.92;
-                ADCdata[S_i++] = Ain;
-                wait_us(T);
-            }
-            for (float i = 1.0f; i > -0.1f; i -= 0.1f) {
-                Aout = i*0.92;  
-                ADCdata[S_i++] = Ain;
-                wait_us(T);
-            }
-            for (int k=0; k<20; k+=2){
-                printf("%f\r\n", ADCdata[k]);
-                wait_us(1000);
+            sample_i = 0;
+            for (int p=0; p<40; p++){
+                for (float i = 0.0f; i < 1.0f; i += 0.1f) {
+                    Aout = i*0.92;
+                    ADCdata[sample_i+(((int)(i*10))/2)] = Ain;
+                    wait_us(T);
+                }
+                sample_i += 5;
+                for (float i = 1.0f; i > 0.0f; i -= 0.1f) {
+                    Aout = i*0.92;  
+                    ADCdata[sample_i+(((int)((1-i)*10))/2)] = Ain;
+                    wait_us(T);
+                }
+                sample_i += 5;
             }
         }
         else if(frequency==100){
-            S_i = 0;
-            for (float i = 0.0f; i < 1.0f; i += 0.1f) {
-                Aout = i*0.92;
-                ADCdata[S_i++] = Ain;
-                wait_us(T);
-            }
-            for (float i = 1.0f; i > -0.1f; i -= 0.1f) {
-                Aout = i*0.92;
-                ADCdata[S_i++] = Ain;
-                wait_us(T);
-            }
-            for (int k=0; k<20; k+=5){
-                printf("%f\r\n", ADCdata[k]);
-                wait_us(1000);
+            sample_i = 0;
+            for (int p=0; p<100; p++){
+                for (float i = 0.0f; i < 1.0f; i += 0.1f) {
+                    Aout = i*0.92;
+                    ADCdata[sample_i+(((int)(i*10))/5)] = Ain;
+                    wait_us(T);
+                }
+                sample_i += 2;
+                for (float i = 1.0f; i > 0.0f; i -= 0.1f) {
+                    Aout = i*0.92;
+                    ADCdata[sample_i+(((int)((1-i)*10))/5)] = Ain;
+                    wait_us(T);
+                }
+                sample_i += 2;
             }
         }
+    }
+    for(int i=0; i<400; i++){
+        printf("%f\r\n", ADCdata[i]);
+        ThisThread::sleep_for(10ms);
     }
 }
