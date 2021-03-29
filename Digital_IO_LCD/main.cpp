@@ -16,7 +16,7 @@ static int frequency = 20;
 static int freq_change = 1;
 static int freq_set = 0;
 
-float ADCdata[405];
+float ADCdata[2005];
 int sample_i;
 int sample_rate = 400;
 
@@ -92,16 +92,14 @@ int main()
             for (int p=0; p<40; p++){
                 for (float i = 0.0f; i < 1.0f; i += 0.1f) {
                     Aout = i*0.92;
-                    ADCdata[sample_i+(((int)(i*10))/2)] = Ain;
+                    ADCdata[sample_i++] = Ain;
                     wait_us(T);
                 }
-                sample_i += 5;
                 for (float i = 1.0f; i > 0.0f; i -= 0.1f) {
                     Aout = i*0.92;  
-                    ADCdata[sample_i+(((int)((1-i)*10))/2)] = Ain;
+                    ADCdata[sample_i++] = Ain;
                     wait_us(T);
                 }
-                sample_i += 5;
             }
         }
         else if(frequency==100){
@@ -109,21 +107,33 @@ int main()
             for (int p=0; p<100; p++){
                 for (float i = 0.0f; i < 1.0f; i += 0.1f) {
                     Aout = i*0.92;
-                    ADCdata[sample_i+(((int)(i*10))/5)] = Ain;
+                    ADCdata[sample_i++] = Ain;
                     wait_us(T);
                 }
-                sample_i += 2;
                 for (float i = 1.0f; i > 0.0f; i -= 0.1f) {
                     Aout = i*0.92;
-                    ADCdata[sample_i+(((int)((1-i)*10))/5)] = Ain;
+                    ADCdata[sample_i++] = Ain;
                     wait_us(T);
                 }
-                sample_i += 2;
             }
         }
     }
-    for(int i=0; i<400; i++){
-        printf("%f\r\n", ADCdata[i]);
-        ThisThread::sleep_for(10ms);
+    if(frequency==20){
+        for(int i=0; i<400; i++){
+            printf("%f\r\n", ADCdata[i]);
+            ThisThread::sleep_for(10ms);
+        }
+    }
+    else if(frequency==40){
+        for(int i=0; i<800; i+=2){
+            printf("%f\r\n", ADCdata[i]);
+            ThisThread::sleep_for(10ms);
+        }
+    }
+    else if(frequency==100){
+        for(int i=0; i<2000; i+=5){
+            printf("%f\r\n", ADCdata[i]);
+            ThisThread::sleep_for(10ms);
+        }
     }
 }
