@@ -10,6 +10,6 @@
 &emsp;&emsp;Picoscope 20hz: https://github.com/Lyds099/hw2/blob/master/Picoscope%2020.png?raw=true  
 &emsp;&emsp;Picoscope 40hz: https://github.com/Lyds099/hw2/blob/master/Picoscope%2040.png?raw=true  
 &emsp;&emsp;Picoscope 100hz: https://github.com/Lyds099/hw2/blob/master/Picoscope%20100.png?raw=true  
-&emsp;&emsp;waveform 20hz: https://github.com/Lyds099/hw2/blob/master/waveform%2020.png?raw=true  
-&emsp;&emsp;waveform 40hz: https://github.com/Lyds099/hw2/blob/master/waveform%2040.png?raw=true  
-&emsp;&emsp;waveform 100hz: https://github.com/Lyds099/hw2/blob/master/waveform%20100.png?raw=true  
+&emsp;&emsp;waveform 20hz: https://github.com/Lyds099/hw2/blob/master/Waveform%2020.png?raw=true  
+&emsp;&emsp;waveform 40hz: https://github.com/Lyds099/hw2/blob/master/Waveform%2040.png?raw=true  
+&emsp;&emsp;waveform 100hz: https://github.com/Lyds099/hw2/blob/master/Waveform%20100.png?raw=true  
