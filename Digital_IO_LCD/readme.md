@@ -6,7 +6,7 @@
 &emsp;&emsp;(5)Start the picoscope: Select "input range A" as +-5 and collection time as 100 ms/div.  
 &emsp;&emsp;(6)Execute the Python script: $ sudo python3 FFT.py and press the user button.
 
-2.what are the results 
+2.what are the results  
 &emsp;&emsp;Picoscope before RC 20hz: https://github.com/Lyds099/hw2/blob/master/Picoscope%20before%20RC%2020hz.png?raw=true  
 &emsp;&emsp;Picoscope before RC 40hz: https://github.com/Lyds099/hw2/blob/master/Picoscope%20before%20RC%2040hz.png?raw=true  
 &emsp;&emsp;Picoscope before RC 100hz: https://github.com/Lyds099/hw2/blob/master/Picoscope%20before%20RC%20100hz.png?raw=true  
